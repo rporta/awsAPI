@@ -21,5 +21,9 @@
 		"recurso": "sns",
 		"url": "/sns"
 	}],
-	"debug": 1
+	"debug": 1,
+	"aws": {
+		"region": "us-east-1",
+		"bucket": "todosgamers"
+	}
 }

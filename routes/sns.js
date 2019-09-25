@@ -2,8 +2,9 @@ var async = require('async');
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+var AWS = require('aws-sdk');
 
-var logger, debug, getSessionId, authorization;
+var logger, debug, getSessionId, authorization, aws;
 
 router.get('/:phone/:message', function(req, res, next) {
 
@@ -11,6 +12,7 @@ router.get('/:phone/:message', function(req, res, next) {
     debug = req.app.locals.debug;
     getSessionId = req.app.locals.utils.getSessionId();
     authorization = req.app.locals.authorization;
+    aws = req.app.locals.aws;
 
     /**
      * Ramiro Portas : #1
@@ -187,11 +189,9 @@ var asyncResolve = (data, cb) => {
 
             // AWS ...
 
-            // Load the AWS SDK for Node.js
-            var AWS = require('aws-sdk');
             // Set region
             AWS.config.update({
-                region: 'REGION'
+                region: aws.region
             });
 
             // Create SMS Attribute parameter you want to get

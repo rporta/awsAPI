@@ -57,6 +57,7 @@ app.locals.logger = logger;
 app.locals.debug = config.debug;
 app.locals.authorization = config.authorization;
 app.locals.utils = utils;
+app.locals.aws = config.aws;
 
 /**
  * Ramiro Portas: #jj
