@@ -13,9 +13,10 @@
   },
   "devDependencies": {},
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "https://github.com/rporta/awsAPI.git"
   },
+  "author": "Ramiro Portas",
   "license": "UNLICENSED",
   "description": "aws-sns-service"
 }
