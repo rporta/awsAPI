@@ -1,6 +1,6 @@
 {
 	"authorization": {
-		"enable": false,
+		"enable": true,
 		"type": "Basic",
 		"user": "ufafa",
 		"password": "pfafa",

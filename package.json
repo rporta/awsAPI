@@ -1,7 +1,7 @@
 {
   "name": "aws-sns-service",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "aws-sns-service.js",
   "dependencies": {
     "express": "^4.17",
     "express-ipfilter": "^1.1.0",

@@ -135,7 +135,7 @@ var asyncResolve = (data, cb) => {
                             data.code--;
                             mensajeDefaut = 'Error en step(' + data.step + '), code: ' + data.code;
                             data.error = error || mensajeDefaut;
-                        })("Error authorization : No existe el headers.authorization");
+                        })("Error authorization : faltan las credenciales");
 
                         cb(true, data);
                     })()
