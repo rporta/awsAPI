@@ -185,45 +185,68 @@ var asyncResolve = (data, cb) => {
                 data.code -= data.cantError;
                 data.cantError = cantError || 0;
             })(1);
-
-
             // AWS ...
+            debug
+                ?
+                logger.debug('step' + data.step + ' : AWS ...') :
+                null;
+
 
             // Set region
             AWS.config.update({
                 region: aws.region
             });
 
-            // Create SMS Attribute parameter you want to get
-            var params = {
-                Message: data.path.message,
-                PhoneNumber: data.path.phone,
-            };
-
-
-            // Create promise and SNS service object
-            var getSMSTypePromise = new AWS.SNS({
+            // Create instance SNS 
+            var sns = new AWS.SNS({
                 apiVersion: '2010-03-31'
-            }).publish(params).promise();
+            });
 
-            // Handle promise's fulfilled/rejected states
-            getSMSTypePromise.then(
-                function(dataAWS) {
-                    data.dataAWS = dataAWS;
-                    cb(false, data);
-                }).catch(
-                function(err) {
-                    //no llegaron los parametros, envio los datos a funcion final con error
-                    logger.debug("Error dataAWS : " + JSON.stringify(err));
+            var paramsSetSMSAttributes = {
+                attributes: {
+                    DefaultSMSType: "Promotional"
+                }
+            };
+            // set sms atribute
+            sns.setSMSAttributes(paramsSetSMSAttributes, function(errSetSMSAttributes, dataSetSMSAttributes) {
+                if (errSetSMSAttributes) {
                     (function error(error) {
                         data.code--;
                         mensajeDefaut = 'Error en step(' + data.step + '), code: ' + data.code;
                         data.error = error || mensajeDefaut;
-                    })("Error : " + err.message);
+                    })("Error setSMSAttributes : " + JSON.stringify(errSetSMSAttributes));
+
                     cb(true, data);
-                });
+                } else {
+
+                    // Create SMS Attribute parameter you want to get
+                    var params = {
+                        Message: data.path.message,
+                        PhoneNumber: data.path.phone
+                    };
 
 
+                    var promiseSNS = sns.publish(params).promise();
+
+                    // Handle promise's fulfilled/rejected states
+                    promiseSNS.then(
+                        function(dataAWS) {
+                            data.dataAWS = dataAWS;
+                            cb(false, data);
+                        }).catch(
+                        function(err) {
+                            //no llegaron los parametros, envio los datos a funcion final con error
+                            logger.debug("Error dataAWS : " + JSON.stringify(err));
+                            (function error(error) {
+                                data.code--;
+                                mensajeDefaut = 'Error en step(' + data.step + '), code: ' + data.code;
+                                data.error = error || mensajeDefaut;
+                            })("Error : " + err.message);
+                            cb(true, data);
+                        });
+
+                }
+            });
         },
     ];
 
