@@ -9,7 +9,7 @@
     "moment": "^2.24.0",
     "node-serialize": "^0.0.4",
     "request": "^2.88.0",
-    "aws-sdk": "^2.535.0"
+    "aws-sdk": "^2.814.0"
   },
   "devDependencies": {},
   "repository": {
